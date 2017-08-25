@@ -31,7 +31,7 @@ class OsmWaysConverter(val targetSFT: SimpleFeatureType,
                        val idBuilder: Expr,
                        val inputFields: IndexedSeq[Field],
                        val userDataBuilder: Map[String, Expr],
-                       val cacheServices: Map[String, EnrichmentCache],
+                       val caches: Map[String, EnrichmentCache],
                        val parseOpts: ConvertParseOpts,
                        val pbf: Boolean,
                        val needsMetadata: Boolean) extends ToSimpleFeatureConverter[OsmWay] with LazyLogging {

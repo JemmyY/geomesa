@@ -37,7 +37,7 @@ class XMLConverter(val targetSFT: SimpleFeatureType,
                    val xsd: Option[String],
                    val inputFields: IndexedSeq[Field],
                    val userDataBuilder: Map[String, Expr],
-                   val cacheServices: Map[String, EnrichmentCache],
+                   val caches: Map[String, EnrichmentCache],
                    val parseOpts: ConvertParseOpts,
                    val lineMode: LineMode) extends ToSimpleFeatureConverter[String] with LazyLogging {
 

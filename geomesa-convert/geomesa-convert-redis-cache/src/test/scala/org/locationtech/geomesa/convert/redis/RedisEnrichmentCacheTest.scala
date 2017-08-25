@@ -1,10 +1,21 @@
+/***********************************************************************
+ * Copyright (c) 2013-2017 Commonwealth Computer Research, Inc.
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Apache License, Version 2.0
+ * which accompanies this distribution and is available at
+ * http://www.opensource.org/licenses/apache2.0.php.
+ ***********************************************************************/
+
+
 package org.locationtech.geomesa.convert.redis
 
 import java.util.ServiceLoader
 
 import com.typesafe.config.ConfigFactory
+import org.junit.runner.RunWith
 import org.locationtech.geomesa.convert.EnrichmentCacheFactory
 import org.specs2.mutable.Specification
+import org.specs2.runner.JUnitRunner
 import redis.clients.jedis.Jedis
 
 class MockRedis extends Jedis {
@@ -20,6 +31,7 @@ class MockRedis extends Jedis {
   }
 }
 
+@RunWith(classOf[JUnitRunner])
 class RedisEnrichmentCacheTest extends Specification {
 
   sequential

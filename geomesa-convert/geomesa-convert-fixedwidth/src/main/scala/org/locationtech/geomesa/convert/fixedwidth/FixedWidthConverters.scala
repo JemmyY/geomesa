@@ -55,7 +55,7 @@ class FixedWidthConverter(val targetSFT: SimpleFeatureType,
                           val idBuilder: Transformers.Expr,
                           val inputFields: IndexedSeq[Field],
                           val userDataBuilder: Map[String, Expr],
-                          val cacheServices: Map[String, EnrichmentCache],
+                          val caches: Map[String, EnrichmentCache],
                           val parseOpts: ConvertParseOpts)
   extends LinesToSimpleFeatureConverter {
 

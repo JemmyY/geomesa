@@ -34,7 +34,7 @@ class JsonSimpleFeatureConverter(jsonConfig: Configuration,
                                  val inputFields: IndexedSeq[Field],
                                  val idBuilder: Expr,
                                  val userDataBuilder: Map[String, Expr],
-                                 val cacheServices: Map[String, EnrichmentCache],
+                                 val caches: Map[String, EnrichmentCache],
                                  val parseOpts: ConvertParseOpts,
                                  val lineMode: LineMode) extends ToSimpleFeatureConverter[String] {
 

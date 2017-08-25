@@ -75,7 +75,7 @@ class DelimitedTextConverter(format: CSVFormat,
                              val idBuilder: Expr,
                              val inputFields: IndexedSeq[Field],
                              val userDataBuilder: Map[String, Expr],
-                             val cacheServices: Map[String, EnrichmentCache],
+                             val caches: Map[String, EnrichmentCache],
                              val options: DelimitedOptions,
                              val parseOpts: ConvertParseOpts)
   extends LinesToSimpleFeatureConverter {
