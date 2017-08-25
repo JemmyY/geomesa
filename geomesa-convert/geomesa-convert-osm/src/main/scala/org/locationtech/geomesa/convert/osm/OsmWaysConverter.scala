@@ -31,6 +31,7 @@ class OsmWaysConverter(val targetSFT: SimpleFeatureType,
                        val idBuilder: Expr,
                        val inputFields: IndexedSeq[Field],
                        val userDataBuilder: Map[String, Expr],
+                       val cacheServices: Map[String, EnrichmentCache],
                        val parseOpts: ConvertParseOpts,
                        val pbf: Boolean,
                        val needsMetadata: Boolean) extends ToSimpleFeatureConverter[OsmWay] with LazyLogging {
@@ -136,10 +137,11 @@ class OsmWaysConverterFactory extends AbstractSimpleFeatureConverterFactory[OsmW
                                         idBuilder: Expr,
                                         fields: IndexedSeq[Field],
                                         userDataBuilder: Map[String, Expr],
+                                        cacheServices: Map[String, EnrichmentCache],
                                         parseOpts: ConvertParseOpts): SimpleFeatureConverter[OsmWay] = {
     val pbf = if (conf.hasPath("format")) conf.getString("format").toLowerCase.trim.equals("pbf") else false
     val needsMetadata = OsmField.requiresMetadata(fields)
-    new OsmWaysConverter(sft, idBuilder, fields, userDataBuilder, parseOpts, pbf, needsMetadata)
+    new OsmWaysConverter(sft, idBuilder, fields, userDataBuilder, cacheServices, parseOpts, pbf, needsMetadata)
   }
 
   override protected def buildField(field: Config): Field = OsmField.build(field)

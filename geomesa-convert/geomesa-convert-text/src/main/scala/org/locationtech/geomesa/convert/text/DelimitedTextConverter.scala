@@ -31,6 +31,7 @@ class DelimitedTextConverterFactory extends AbstractSimpleFeatureConverterFactor
                                         idBuilder: Expr,
                                         fields: IndexedSeq[Field],
                                         userDataBuilder: Map[String, Expr],
+                                        cacheServices: Map[String, EnrichmentCache],
                                         parseOpts: ConvertParseOpts): DelimitedTextConverter = {
     var baseFmt = conf.getString("format").toUpperCase match {
       case "CSV" | "DEFAULT"          => CSVFormat.DEFAULT
@@ -63,7 +64,7 @@ class DelimitedTextConverterFactory extends AbstractSimpleFeatureConverterFactor
       baseFmt = baseFmt.withEscape(q.toCharArray()(0))
     }
 
-    new DelimitedTextConverter(baseFmt, sft, idBuilder, fields, userDataBuilder, opts, parseOpts)
+    new DelimitedTextConverter(baseFmt, sft, idBuilder, fields, userDataBuilder, cacheServices, opts, parseOpts)
   }
 }
 
@@ -74,6 +75,7 @@ class DelimitedTextConverter(format: CSVFormat,
                              val idBuilder: Expr,
                              val inputFields: IndexedSeq[Field],
                              val userDataBuilder: Map[String, Expr],
+                             val cacheServices: Map[String, EnrichmentCache],
                              val options: DelimitedOptions,
                              val parseOpts: ConvertParseOpts)
   extends LinesToSimpleFeatureConverter {

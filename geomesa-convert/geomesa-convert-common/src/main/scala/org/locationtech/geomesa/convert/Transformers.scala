@@ -648,3 +648,16 @@ class MathFunctionFactory extends TransformerFunctionFactory {
     s
   }
 }
+
+class EnrichmentCacheFunctionFactory extends TransformerFunctionFactory {
+  override def functions = Seq(cacheLookup)
+
+  val cacheLookup = new TransformerFn {
+    override def names: Seq[String] = Seq("cacheLookup")
+    override def eval(args: Array[Any])(implicit ctx: EvaluationContext): Any = {
+      val cache = ctx.getCache(args(0).asInstanceOf[String])
+      cache.get(Array(args(1).asInstanceOf[String], args(2).asInstanceOf[String]))
+    }
+  }
+
+}
