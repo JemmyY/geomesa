@@ -8,6 +8,8 @@
 
 package org.locationtech.geomesa.convert.common
 
+import java.time.{LocalDateTime, ZoneOffset}
+import java.time.format.DateTimeFormatter
 import java.util.Date
 
 import com.google.common.hash.Hashing
@@ -257,6 +259,13 @@ class TransformersTest extends Specification {
           val secs = testDate.getTime / 1000L
           val exp = Transformers.parseTransform("secsToDate($1)")
           exp.eval(Array("", secs)).asInstanceOf[Date] must be equalTo testDate
+        }
+
+        "transform a date to a string" >> {
+          val d = LocalDateTime.now()
+          val fmt = DateTimeFormatter.ofPattern("YYYY-MM-dd'T'HH:mm:ss.SSSSSS")
+          val exp = Transformers.parseTransform("dateToString('YYYY-MM-dd\\'T\\'HH:mm:ss.SSSSSS', $1)")
+          exp.eval(Array("", Date.from(d.toInstant(ZoneOffset.UTC)))).asInstanceOf[String] must be equalTo fmt.format(d)
         }
       }
 

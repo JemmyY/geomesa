@@ -408,7 +408,7 @@ class DateFunctionFactory extends TransformerFunctionFactory {
 
   override def functions: Seq[TransformerFn] =
     Seq(now, customFormatDateParser, datetime, isodate, isodatetime, basicDateTimeNoMillis,
-      dateHourMinuteSecondMillis, millisToDate, secsToDate)
+      dateHourMinuteSecondMillis, millisToDate, secsToDate, dateToString)
 
   val now                        = TransformerFn("now") { args => DateTime.now.toDate }
   val millisToDate               = TransformerFn("millisToDate") { args => new Date(args(0).asInstanceOf[Long]) }
@@ -436,6 +436,21 @@ class DateFunctionFactory extends TransformerFunctionFactory {
       format.parseDateTime(args(1).asInstanceOf[String]).toDate
     }
   }
+
+  case class DateToString(var format: DateTimeFormatter = null) extends TransformerFn {
+    override val names = Seq("dateToString")
+    override def getInstance: DateToString = DateToString()
+
+    override def eval(args: Array[Any])(implicit ctx: EvaluationContext): Any = {
+      if (format == null) {
+        format = DateTimeFormat.forPattern(args(0).asInstanceOf[String]).withZoneUTC()
+      }
+      format.print(args(1).asInstanceOf[java.util.Date].getTime)
+    }
+  }
+
+  val dateToString = DateToString()
+
 }
 
 class GeometryFunctionFactory extends TransformerFunctionFactory {
