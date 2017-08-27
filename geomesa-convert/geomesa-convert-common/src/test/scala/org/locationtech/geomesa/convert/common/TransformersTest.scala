@@ -337,7 +337,7 @@ class TransformersTest extends Specification {
       }
 
       "handle named values" >> {
-        implicit val ctx = EvaluationContext(IndexedSeq(null, "foo", null), Array[Any](null, "bar", null), null)
+        implicit val ctx = EvaluationContext(IndexedSeq(null, "foo", null), Array[Any](null, "bar", null), null, Map.empty)
         val exp = Transformers.parseTransform("capitalize($foo)")
         exp.eval(Array(null))(ctx) must be equalTo "Bar"
       }
@@ -628,7 +628,7 @@ class TransformersTest extends Specification {
     }
 
     "return null for non-existing fields" >> {
-      val fieldsCtx = new EvaluationContextImpl(IndexedSeq("foo", "bar"), Array("5", "10"), null)
+      val fieldsCtx = new EvaluationContextImpl(IndexedSeq("foo", "bar"), Array("5", "10"), null, Map.empty)
       Transformers.parseTransform("$b").eval(Array())(fieldsCtx) mustEqual null
       Transformers.parseTransform("$bar").eval(Array())(fieldsCtx) mustEqual "10"
     }
