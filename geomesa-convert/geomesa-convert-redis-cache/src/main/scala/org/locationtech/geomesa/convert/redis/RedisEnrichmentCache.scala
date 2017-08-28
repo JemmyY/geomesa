@@ -16,7 +16,7 @@ import com.google.common.cache.{CacheBuilder, CacheLoader}
 import com.typesafe.config.Config
 import org.apache.commons.pool2.impl.{DefaultPooledObject, GenericKeyedObjectPool}
 import org.apache.commons.pool2.{BaseKeyedPooledObjectFactory, KeyedPooledObjectFactory, PooledObject}
-import org.locationtech.geomesa.convert.{EnrichmentCache, EnrichmentCacheFactory, EvaluationContext, TransformerFn}
+import org.locationtech.geomesa.convert.{EnrichmentCache, EnrichmentCacheFactory}
 import redis.clients.jedis.Jedis
 
 trait RedisConnectionBuilder {
@@ -61,19 +61,4 @@ class RedisEnrichmentCacheFactory extends EnrichmentCacheFactory {
     }
     new RedisEnrichmentCache(connBuilder, url, timeout)
   }
-}
-
-
-object RedisEnrichmentCache {
-
-  case class LookupRedis() extends TransformerFn {
-    override def names: Seq[String] = Seq("lookupRedis")
-    override def eval(args: Array[Any])(implicit ctx: EvaluationContext): Any = {
-      val cache = ctx.getCache(args(0).asInstanceOf[String])
-      cache.get(Array(args(1).asInstanceOf[String], args(2).asInstanceOf[String]))
-    }
-  }
-
-  val lookupRedis = LookupRedis()
-
 }

@@ -573,7 +573,7 @@ Enrichment Functions
 ~~~~~~~~~~~~~~~~~~~~
 
 cacheLookup
-^^^^^^^^
+^^^^^^^^^^^
 
 Description: Looks up a value from a cache
 
