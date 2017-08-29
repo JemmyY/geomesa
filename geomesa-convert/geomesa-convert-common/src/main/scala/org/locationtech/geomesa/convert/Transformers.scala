@@ -499,7 +499,7 @@ class GeometryFunctionFactory extends TransformerFunctionFactory {
 }
 
 class IdFunctionFactory extends TransformerFunctionFactory {
-  override def functions = Seq(string2Bytes, md5, uuidFn, base64)
+  override def functions = Seq(string2Bytes, md5, uuidFn, base64, murmur3_32, murmur3_64)
 
   val string2Bytes = TransformerFn("string2bytes", "stringToBytes") {
     args => args(0).asInstanceOf[String].getBytes(StandardCharsets.UTF_8)
@@ -513,10 +513,28 @@ class IdFunctionFactory extends TransformerFunctionFactory {
   class MD5 extends TransformerFn {
     override val names = Seq("md5")
     override def getInstance: MD5 = new MD5()
-    val hasher = Hashing.md5()
+    private val hasher = Hashing.md5()
     override def eval(args: Array[Any])(implicit ctx: EvaluationContext): Any =
       hasher.hashBytes(args(0).asInstanceOf[Array[Byte]]).toString
   }
+
+  class Murmur3_32 extends TransformerFn {
+    private val hasher = Hashing.murmur3_32()
+    override val names: Seq[String] = Seq("murmur3_32")
+    override def eval(args: Array[Any])(implicit ctx: EvaluationContext): Any = {
+      hasher.hashString(args(0).toString, StandardCharsets.UTF_8)
+    }
+  }
+  val murmur3_32 = new Murmur3_32
+
+  class Murmur3_64 extends TransformerFn {
+    private val hasher = Hashing.murmur3_128()
+    override val names: Seq[String] = Seq("murmur3_64")
+    override def eval(args: Array[Any])(implicit ctx: EvaluationContext): Any = {
+      hasher.hashString(args(0).toString, StandardCharsets.UTF_8).asLong()
+    }
+  }
+  val murmur3_64 = new Murmur3_64
 }
 
 class LineNumberFunctionFactory extends TransformerFunctionFactory {
