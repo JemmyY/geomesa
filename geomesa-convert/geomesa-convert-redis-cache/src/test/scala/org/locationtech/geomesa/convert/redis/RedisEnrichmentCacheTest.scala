@@ -42,7 +42,7 @@ class RedisEnrichmentCacheTest extends Specification {
         override def buildConnection(url: String): Jedis = new MockRedis
       }
 
-      val cache = new RedisEnrichmentCache(connBuilder, "", -1)
+      val cache = new RedisEnrichmentCache(connBuilder, "", -1, true)
       val res = cache.get(Array("1", "foo")).asInstanceOf[String]
       res must be equalTo "bar"
     }
@@ -52,7 +52,21 @@ class RedisEnrichmentCacheTest extends Specification {
         override def buildConnection(url: String): Jedis = new MockRedis
       }
 
-      val cache = new RedisEnrichmentCache(connBuilder, "", 1)
+      val cache = new RedisEnrichmentCache(connBuilder, "", 1, true)
+      val res = cache.get(Array("1", "foo")).asInstanceOf[String]
+      res must be equalTo "bar"
+
+      Thread.sleep(2)
+      val res2 = cache.get(Array("1", "foo")).asInstanceOf[String]
+      res2 must be equalTo "baz"
+    }
+
+    "respect no-local-cache" >> {
+      val connBuilder = new RedisConnectionBuilder {
+        override def buildConnection(url: String): Jedis = new MockRedis
+      }
+
+      val cache = new RedisEnrichmentCache(connBuilder, "", -1, false)
       val res = cache.get(Array("1", "foo")).asInstanceOf[String]
       res must be equalTo "bar"
 
